@@ -1,0 +1,937 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Archives: 2012/10 | 雨落凡尘</title>
+  <meta name="author" content="smilearchery">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="雨落凡尘"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="雨落凡尘" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+  
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">雨落凡尘</a></h1>
+  <h2><a href="/">骚年们，我们的征途是星辰大海……</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+<h2 class="archive-title">2012/10</h2>
+
+
+  
+    <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-10-23T16:00:00.000Z"><a href="/2012/10/24/链表逆置/">2012 10 24</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/10/24/链表逆置/">链表逆置</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>当年面腾讯实习和百度笔试都出现了此题，非常简单且经典的题目，留下做个记录吧～～～</p>
+<figure class="highlight lang-c"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+</pre></td><td class="code"><pre>Node* LinkList_reverse(Node* head)
+{
+    Node *preNode,*curNode,*nextNode;
+
+    <span class="keyword">if</span>(head==<span class="keyword">NULL</span>) <span class="keyword">return</span> <span class="keyword">NULL</span>;<span class="comment">//空链表</span>
+
+    <span class="keyword">if</span>(head-&gt;next == <span class="keyword">NULL</span>) <span class="keyword">return</span> head;<span class="comment">//仅一个元素</span>
+
+    curNode = head;preNode=<span class="keyword">NULL</span>;<span class="comment">//初始化</span>
+
+    <span class="keyword">while</span>(curNode)
+    {
+        nextNode = curNode-&gt;next;<span class="comment">//先记录下一个结点</span>
+        curNode-&gt;next = preNode;<span class="comment">//改变链表方向（逆置）</span>
+        preNode = curNode;<span class="comment">//将当前结点作为下一次循环的前一个结点</span>
+        curNode = nextNode;<span class="comment">//向后推移一个结点</span>
+    }
+    <span class="keyword">return</span> preNode;<span class="comment">//当遍历完链表后curNode应该为空，此时preNode就是逆置后链表头(head)</span>
+}
+</pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+  
+    <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-10-23T16:00:00.000Z"><a href="/2012/10/24/实现qq好友列表的expandablelistview打开分组在最上方浮动/">2012 10 24</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/10/24/实现qq好友列表的expandablelistview打开分组在最上方浮动/">实现QQ好友列表的ExpandableListView打开分组在最上方浮动</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p><img src="http://smilesword.com/wp-content/uploads/2012/10/20121024_112308-168x300.jpg" alt="示例">
+在项目中，产品提出要实现类似于QQ好友列表打开的分组在最上浮动的效果，具体实现的原理很简单：<br>在页面Layout中，在ExpandableListView的最上方覆盖一个和GroupView相同的一个View A.实现ListView的onScroll方法，当满足显示的条件时设置A为Visible，反之为Gone.  </p>
+<p>下面看代码：(<a href="http://blog.csdn.net/johnny901114/article/details/7841685">以下代码来自johnny901114的专栏</a>)</p>
+<figure class="highlight lang-xml"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+</pre></td><td class="code"><pre><span class="pi">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span>
+<span class="tag">&lt;<span class="title">RelativeLayout</span> <span class="attribute">xmlns:android</span>=<span class="value">"http://schemas.android.com/apk/res/android"</span>
+    <span class="attribute">android:layout_width</span>=<span class="value">"fill_parent"</span>
+    <span class="attribute">android:layout_height</span>=<span class="value">"fill_parent"</span>
+    <span class="attribute">android:background</span>=<span class="value">"@drawable/default_bg"</span> &gt;</span>
+
+    <span class="tag">&lt;<span class="title">ExpandableListView
+</span>        <span class="attribute">android:id</span>=<span class="value">"@+id/list"</span>
+        <span class="attribute">android:layout_width</span>=<span class="value">"fill_parent"</span>
+        <span class="attribute">android:layout_height</span>=<span class="value">"fill_parent"</span>
+        <span class="attribute">android:layout_alignParentLeft</span>=<span class="value">"true"</span>
+        <span class="attribute">android:cacheColorHint</span>=<span class="value">"#00000000"</span>
+        <span class="attribute">android:divider</span>=<span class="value">"@android:color/white"</span>
+        <span class="attribute">android:dividerHeight</span>=<span class="value">"1dp"</span> /&gt;</span>
+
+    <span class="tag">&lt;<span class="title">LinearLayout
+</span>        <span class="attribute">android:id</span>=<span class="value">"@+id/topGroup"</span>
+        <span class="attribute">android:layout_width</span>=<span class="value">"fill_parent"</span>
+        <span class="attribute">android:layout_height</span>=<span class="value">"50dip"</span>
+        <span class="attribute">android:visibility</span>=<span class="value">"gone"</span>
+        <span class="attribute">android:layout_alignParentTop</span>=<span class="value">"true"</span>&gt;</span>
+
+         <span class="tag">&lt;<span class="title">ImageView
+</span>            <span class="attribute">android:id</span>=<span class="value">"@+id/ImageView01"</span>
+            <span class="attribute">android:layout_width</span>=<span class="value">"wrap_content"</span>
+            <span class="attribute">android:layout_height</span>=<span class="value">"wrap_content"</span>
+            <span class="attribute">android:gravity</span>=<span class="value">"center_vertical"</span>
+            <span class="attribute">android:paddingTop</span>=<span class="value">"10dip"</span>
+            <span class="attribute">android:src</span>=<span class="value">"@drawable/user_group"</span> &gt;</span>
+        <span class="tag">&lt;/<span class="title">ImageView</span>&gt;</span>
+
+        <span class="tag">&lt;<span class="title">RelativeLayout
+</span>            <span class="attribute">android:id</span>=<span class="value">"@+id/layout_013"</span>
+            <span class="attribute">android:layout_alignRight</span>=<span class="value">"@id/ImageView01"</span>
+            <span class="attribute">android:layout_width</span>=<span class="value">"wrap_content"</span>
+            <span class="attribute">android:layout_height</span>=<span class="value">"wrap_content"</span> &gt;</span>
+
+            <span class="tag">&lt;<span class="title">TextView
+</span>                <span class="attribute">android:id</span>=<span class="value">"@+id/content_001"</span>
+                <span class="attribute">android:layout_width</span>=<span class="value">"wrap_content"</span>
+                <span class="attribute">android:layout_height</span>=<span class="value">"fill_parent"</span>
+                <span class="attribute">android:layout_centerVertical</span>=<span class="value">"true"</span>
+                <span class="attribute">android:singleLine</span>=<span class="value">"true"</span>
+                <span class="attribute">android:paddingLeft</span>=<span class="value">"10px"</span>
+                <span class="attribute">android:textColor</span>=<span class="value">"#FFFFFF"</span>
+                <span class="attribute">android:textSize</span>=<span class="value">"26px"</span> &gt;</span>
+            <span class="tag">&lt;/<span class="title">TextView</span>&gt;</span>
+
+            <span class="tag">&lt;<span class="title">ImageView
+</span>                <span class="attribute">android:id</span>=<span class="value">"@+id/tubiao"</span>
+                <span class="attribute">android:layout_width</span>=<span class="value">"wrap_content"</span>
+                <span class="attribute">android:layout_height</span>=<span class="value">"wrap_content"</span>
+                <span class="attribute">android:layout_alignParentRight</span>=<span class="value">"true"</span>
+                 /&gt;</span>
+        <span class="tag">&lt;/<span class="title">RelativeLayout</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">LinearLayout</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">RelativeLayout</span>&gt;</span>
+</pre></td></tr></table></figure>
+
+<figure class="highlight lang-java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+</pre></td><td class="code"><pre>    <span class="keyword">public</span> <span class="keyword">void</span> initView() {
+        <span class="javadoc">/**
+         * 监听父节点打开的事件
+         */</span>
+        expandableList.setOnGroupExpandListener(<span class="keyword">new</span> OnGroupExpandListener() {
+            <span class="annotation">@Override</span>
+            <span class="keyword">public</span> <span class="keyword">void</span> onGroupExpand(<span class="keyword">int</span> groupPosition) {
+                the_group_expand_position = groupPosition;
+                ids.put(groupPosition, groupPosition);
+                count_expand = ids.size();
+            }
+        });
+        <span class="javadoc">/**
+         * 监听父节点关闭的事件
+         */</span>
+        expandableList
+                .setOnGroupCollapseListener(<span class="keyword">new</span> OnGroupCollapseListener() {
+                    <span class="annotation">@Override</span>
+                    <span class="keyword">public</span> <span class="keyword">void</span> onGroupCollapse(<span class="keyword">int</span> groupPosition) {
+                        ids.remove(groupPosition);
+                        expandableList.setSelectedGroup(groupPosition);
+                        count_expand = ids.size();
+                    }
+                });
+        view_flotage = (LinearLayout) findViewById(R.id.topGroup);
+        view_flotage.setOnClickListener(<span class="keyword">new</span> View.OnClickListener() {
+            <span class="annotation">@Override</span>
+            <span class="keyword">public</span> <span class="keyword">void</span> onClick(View v) {
+                view_flotage.setVisibility(View.GONE);
+                expandableList.collapseGroup(the_group_expand_position);
+                expandableList.setSelectedGroup(the_group_expand_position);
+            }
+        });
+        group_content = (TextView) findViewById(R.id.content_001);
+        tubiao = (ImageView) findViewById(R.id.tubiao);
+        tubiao.setBackgroundResource(R.drawable.btn_browser2);
+        <span class="comment">// 设置滚动事件</span>
+        expandableList.setOnScrollListener(<span class="keyword">this</span>);
+    }
+
+    <span class="annotation">@Override</span>
+    <span class="keyword">public</span> <span class="keyword">void</span> onScroll(AbsListView view, <span class="keyword">int</span> firstVisibleItem,
+            <span class="keyword">int</span> visibleItemCount, <span class="keyword">int</span> totalItemCount) {
+        <span class="comment">// 防止三星,魅族等手机第一个条目可以一直往下拉,父条目和悬浮同时出现的问题</span>
+        <span class="keyword">if</span> (firstVisibleItem == <span class="number">0</span>) {
+            view_flotage.setVisibility(View.GONE);
+        }
+        <span class="comment">// 控制滑动时TextView的显示与隐藏</span>
+        <span class="keyword">int</span> npos = view.pointToPosition(<span class="number">0</span>, <span class="number">0</span>);
+        <span class="keyword">if</span> (npos != AdapterView.INVALID_POSITION) {
+            <span class="keyword">long</span> pos = expandableList.getExpandableListPosition(npos);
+            <span class="keyword">int</span> childPos = ExpandableListView.getPackedPositionChild(pos);
+            <span class="keyword">final</span> <span class="keyword">int</span> groupPos = ExpandableListView.getPackedPositionGroup(pos);
+            <span class="keyword">if</span> (childPos == AdapterView.INVALID_POSITION) {
+                View groupView = expandableList.getChildAt(npos
+                        - expandableList.getFirstVisiblePosition());
+                indicatorGroupHeight = groupView.getHeight();
+            }
+
+            <span class="keyword">if</span> (indicatorGroupHeight == <span class="number">0</span>) {
+                <span class="keyword">return</span>;
+            }
+            <span class="comment">// if (isExpanded) {</span>
+            <span class="keyword">if</span> (count_expand &gt; <span class="number">0</span>) {
+                the_group_expand_position = groupPos;
+                group_content.setText(groupData.get(the_group_expand_position)
+                        .get(<span class="string">"group_text"</span>));
+                <span class="keyword">if</span> (the_group_expand_position != groupPos
+                        || !expandableList.isGroupExpanded(groupPos)) {
+                    view_flotage.setVisibility(View.GONE);
+                } <span class="keyword">else</span> {
+                    view_flotage.setVisibility(View.VISIBLE);
+                }
+            }
+            <span class="keyword">if</span> (count_expand == <span class="number">0</span>) {
+                view_flotage.setVisibility(View.GONE);
+            }
+        }
+
+        <span class="keyword">if</span> (the_group_expand_position == -<span class="number">1</span>) {
+            <span class="keyword">return</span>;
+        }
+        <span class="javadoc">/**
+         * calculate point (0,indicatorGroupHeight)
+         */</span>
+        <span class="keyword">int</span> showHeight = getHeight();
+        MarginLayoutParams layoutParams = (MarginLayoutParams) view_flotage
+                .getLayoutParams();
+        <span class="comment">// 得到悬浮的条滑出屏幕多少</span>
+        layoutParams.topMargin = -(indicatorGroupHeight - showHeight);
+        view_flotage.setLayoutParams(layoutParams);
+    }
+
+    <span class="keyword">private</span> <span class="keyword">int</span> getHeight() {
+        <span class="keyword">int</span> showHeight = indicatorGroupHeight;
+        <span class="keyword">int</span> nEndPos = expandableList.pointToPosition(<span class="number">0</span>, indicatorGroupHeight);
+        <span class="keyword">if</span> (nEndPos != AdapterView.INVALID_POSITION) {
+            <span class="keyword">long</span> pos = expandableList.getExpandableListPosition(nEndPos);
+            <span class="keyword">int</span> groupPos = ExpandableListView.getPackedPositionGroup(pos);
+            <span class="keyword">if</span> (groupPos != the_group_expand_position) {
+                View viewNext = expandableList.getChildAt(nEndPos
+                        - expandableList.getFirstVisiblePosition());
+                showHeight = viewNext.getTop();
+            }
+        }
+        <span class="keyword">return</span> showHeight;
+    }
+</pre></td></tr></table></figure>
+
+<p>由于在魅族或者三星等部分手机中，ListView的最上端可以一直向下拉，所以需添加以下代码:</p>
+<figure class="highlight lang-java"><table><tr><td class="gutter"><pre>1
+2
+3
+</pre></td><td class="code"><pre><span class="keyword">if</span> (firstVisibleItem == <span class="number">0</span>) {
+            view_flotage.setVisibility(View.GONE);
+}
+</pre></td></tr></table></figure>
+
+<p>有时候，我们可能需要取消ListView的divider ，这时</p>
+<figure class="highlight lang-java"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre><span class="keyword">int</span> npos = view.pointToPosition(<span class="number">0</span>, <span class="number">0</span>);
+</pre></td></tr></table></figure>
+
+<p>npos将指向第一条，所以我们可以采取将(0,0)换为(0,-1)的方式来实现</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+  
+    <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-10-23T16:00:00.000Z"><a href="/2012/10/24/如何控制viewpager的滑动速度/">2012 10 24</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/10/24/如何控制viewpager的滑动速度/">如何控制ViewPager的滑动速度</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>做某应用时，为了实现页面的滑动效果，使用了ViewPager，结果产品嫌默认的速度过快，要求把速度控制一下…额…灰长蛋疼….还好，经过多方查找，在<a href="http://stackoverflow.com/questions/8155257/slowing-speed-of-viewpager-controller-in-android">Stackoverflow</a>上找到了解决方案。方法很简单，使用Java的反射机制，将ViewPager的Scoller搞出来，换成我们自定义的就可以了。  </p>
+<p>下面上代码：</p>
+<figure class="highlight lang-java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+</pre></td><td class="code"><pre><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FixedSpeedScroller</span> <span class="keyword">extends</span> <span class="title">Scroller</span> {</span>
+
+    <span class="keyword">private</span> <span class="keyword">int</span> mDuration = <span class="number">5000</span>;<span class="comment">//设置移动速度</span>
+
+    <span class="keyword">public</span> FixedSpeedScroller(Context context) {
+        <span class="keyword">super</span>(context);
+    }
+
+    <span class="keyword">public</span> FixedSpeedScroller(Context context, Interpolator interpolator) {
+        <span class="keyword">super</span>(context, interpolator);
+    }
+
+    <span class="keyword">public</span> FixedSpeedScroller(Context context, Interpolator interpolator, <span class="keyword">boolean</span> flywheel) {
+        <span class="keyword">super</span>(context, interpolator, flywheel);
+    }
+
+    <span class="annotation">@Override</span>
+    <span class="keyword">public</span> <span class="keyword">void</span> startScroll(<span class="keyword">int</span> startX, <span class="keyword">int</span> startY, <span class="keyword">int</span> dx, <span class="keyword">int</span> dy, <span class="keyword">int</span> duration) {
+        <span class="comment">// Ignore received duration, use fixed one instead</span>
+        <span class="keyword">super</span>.startScroll(startX, startY, dx, dy, mDuration);
+    }
+
+    <span class="annotation">@Override</span>
+    <span class="keyword">public</span> <span class="keyword">void</span> startScroll(<span class="keyword">int</span> startX, <span class="keyword">int</span> startY, <span class="keyword">int</span> dx, <span class="keyword">int</span> dy) {
+        <span class="comment">// Ignore received duration, use fixed one instead</span>
+        <span class="keyword">super</span>.startScroll(startX, startY, dx, dy, mDuration);
+    }
+}
+</pre></td></tr></table></figure>
+
+<figure class="highlight lang-java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre></td><td class="code"><pre><span class="keyword">try</span> {
+    Field mScroller;
+    mScroller = ViewPager.class.getDeclaredField(<span class="string">"mScroller"</span>);
+    mScroller.setAccessible(<span class="keyword">true</span>); 
+    FixedSpeedScroller scroller = <span class="keyword">new</span> FixedSpeedScroller(mPager.getContext(), sInterpolator);
+    scroller.setFixedDuration(<span class="number">5000</span>);
+    mScroller.set(mPager, scroller);
+} <span class="keyword">catch</span> (NoSuchFieldException e) {
+} <span class="keyword">catch</span> (IllegalArgumentException e) {
+} <span class="keyword">catch</span> (IllegalAccessException e) {
+}
+</pre></td></tr></table></figure>
+
+<p>是不是很简单呢～:)</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+  
+    <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-10-23T16:00:00.000Z"><a href="/2012/10/24/如何在scrollview中嵌套多个listview/">2012 10 24</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/10/24/如何在scrollview中嵌套多个listview/">如何在ScrollView中嵌套多个ListView</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>一般多个控件在一个Layout中，并且我们想让页面可以向下滑动时，我们会使用ScrollView，将控件放在ScrollView中，但是有时候，我们会碰到一些需求如让两个或多个ListView在同一个页面显示。这时就会出现问题，由于ListView 也有自带的滚动事件，会与ScrollView产生冲突，会造成ListView 只能显示一行或者两行，数据在这点控件内可以滚动，甚是蛋疼…  </p>
+<p>而解决方法是比较简单的，我们使用一个方法：在ListView加载完数据后，计算每一个item的高度，同时加上divider的高度，算出Measure后ListView的总高度，将ListView的高度设置为这个高度就可以了，下面看代码：</p>
+<figure class="highlight lang-java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+</pre></td><td class="code"><pre><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> setListViewHeightBasedOnChildren(ListView listView) {
+        ListAdapter listAdapter = listView.getAdapter();
+        <span class="keyword">if</span> (listAdapter == <span class="keyword">null</span>) {
+            <span class="comment">// pre-condition</span>
+            <span class="keyword">return</span>;
+        }
+
+        <span class="keyword">int</span> totalHeight = <span class="number">0</span>;
+        <span class="keyword">int</span> desiredWidth = MeasureSpec.makeMeasureSpec(listView.getWidth(), MeasureSpec.AT_MOST);
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; listAdapter.getCount(); i++) {
+            View listItem = listAdapter.getView(i, <span class="keyword">null</span>, listView);
+            listItem.measure(<span class="number">0</span>, <span class="number">0</span>);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * listAdapter.getCount());
+        listView.setLayoutParams(params);
+        <span class="comment">// listView.requestLayout();</span>
+    }
+</pre></td></tr></table></figure>
+
+<p>但是这样对性能会有比较严重的影响，如代码可见，在使用这个方法时，要对每一个item进行计算，最后再将ListView设置为定高，经测试，在item较多时，会有比较严重的延迟。因此此方法适合item不多，或者对item较少增删改的情况。在数据较多时，还是考虑使用ExpandableListView或者其他的实现方式。</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+  
+    <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-10-22T16:00:00.000Z"><a href="/2012/10/23/android中使用progressdialog出现的一个问题/">2012 10 23</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/10/23/android中使用progressdialog出现的一个问题/">Android中使用ProgressDialog出现的一个问题</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>在项目中，为了实现耗时操作不影响用户体验，我采取了在耗时操作的工程中显示ProgressDialog的方法让用户等待，但是在实际使用中，出现了一个问题，先看代码：</p>
+<figure class="highlight lang-java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></td><td class="code"><pre><span class="annotation">@Override</span>
+<span class="keyword">public</span> <span class="keyword">void</span> onClick(View v) {
+    showHandleDataDialog();
+    <span class="keyword">new</span> Thread() {
+        <span class="annotation">@Override</span>
+        <span class="keyword">public</span> <span class="keyword">void</span> run() {
+            doSomeThing();
+        };
+    }.start();
+}
+</pre></td></tr></table></figure>
+
+<p>这是一个Button的onClick方法，doSomeThing中就是要做的耗时操作(大约2-10秒)，先showHandleDataDialog让ProgressDialog显示出来，然后再新建立一个线程，在线程中做耗时操作.  </p>
+<p>这段代码看起来没有问题，但是在实际使用中，却出现了一个问题：  </p>
+<p>在点击Button后，ProgressDialog并没有出现，过2-10秒后（即doSomeTing执行完后），ProgressDialog一闪而过。  </p>
+<p>这个现象非常诡异，后来，为了实验，我将写法改成如下方式：</p>
+<figure class="highlight lang-java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="code"><pre><span class="annotation">@Override</span>
+<span class="keyword">public</span> <span class="keyword">void</span> onClick(View v) {
+    showHandleDataDialog();
+    mHandler.sendMessageDelayed(
+            mHandler.obtainMessage(Constants.DO_SOME_THING),
+            Constants.DXLOADING_DIMISS_DELAYED);
+}
+</pre></td></tr></table></figure>
+
+<figure class="highlight lang-java"><figcaption><span>Handler</span></figcaption><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+</pre></td><td class="code"><pre><span class="keyword">private</span> Handler mHandler = <span class="keyword">new</span> Handler() {
+    <span class="annotation">@Override</span>
+    <span class="keyword">public</span> <span class="keyword">void</span> handleMessage(Message msg) {
+        <span class="keyword">switch</span> (msg.what) {
+            <span class="keyword">case</span> Constants.DO_SOME_THING:
+                <span class="keyword">new</span> Thread() {
+                    <span class="annotation">@Override</span>
+                    <span class="keyword">public</span> <span class="keyword">void</span> run() {
+                        doSomeThing();
+                    };
+                }.start();
+                <span class="keyword">break</span>;
+            <span class="keyword">default</span>:
+                <span class="keyword">break</span>;
+        }
+    };
+};
+</pre></td></tr></table></figure>
+
+<p>这个问题便得到了解决～但是问题为什么出现，仍没有找到答案～如哪位仁兄碰巧了解，请不吝赐教～^_^</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+  
+    <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-10-14T16:00:00.000Z"><a href="/2012/10/15/搜狗笔试的一道加密解密题/">2012 10 15</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/10/15/搜狗笔试的一道加密解密题/">搜狗笔试的一道加密解密题</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>N个整数（数的大小为0-255）的序列，把它们加密为K个整数（数的大小为0-255）.再将K个整数顺序随机打乱，使得可以从这乱序的K个整数中解码出原序列。设计加密解密算法,且要求K&lt;=15<em>N.<br>如果是:<br>    1. N&lt;=16,要求K&lt;=16</em>N.
+    2. N&lt;=16,要求K&lt;=10<em>N.
+    3. N&lt;=64,要求K&lt;=15</em>N.</p>
+<p>首先考虑N个整数，为0-255，及每一个整数可换算成为一个8位的二进制数，因此N个整数共需8N位二进制来存储。  </p>
+<p>考虑情况1：N个整数需要8N位，将其存入16N个数中，因此每个数只需存储8N/16N=0.5&lt;1位数  </p>
+<p>同理可证，情况2需0.8&lt;1位，情况3需8/15 &lt;1位。  </p>
+<p>考虑以上N最大的情况下，N=64，64需要6位二进制数来存储。而K中的每一个整数也可以用8位二进制数来表示，因此，将前六位用于存储顺序信息(0-64)，后两位用于存储N个整数中的两位。  </p>
+<p>解析时，只需根据前六位的顺序得到有序的8N位二进制数，然后每8位一组即可得到原N个整数的序列。</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+  
+
+  <nav id="pagination">
+  
+  
+  <div class="clearfix"></div>
+</nav>
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:yoursite.com">
+  </form>
+</div>
+
+  
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/Android/">Android</a><small>5</small></li>
+  
+    <li><a href="/tags/C/">C</a><small>1</small></li>
+  
+    <li><a href="/tags/ExpandableListView/">ExpandableListView</a><small>1</small></li>
+  
+    <li><a href="/tags/Java/">Java</a><small>1</small></li>
+  
+    <li><a href="/tags/Linux/">Linux</a><small>1</small></li>
+  
+    <li><a href="/tags/ListView/">ListView</a><small>2</small></li>
+  
+    <li><a href="/tags/QQ/">QQ</a><small>1</small></li>
+  
+    <li><a href="/tags/ViewPager/">ViewPager</a><small>1</small></li>
+  
+    <li><a href="/tags/Wine/">Wine</a><small>1</small></li>
+  
+    <li><a href="/tags/好玩的/">好玩的</a><small>1</small></li>
+  
+    <li><a href="/tags/实习/">实习</a><small>1</small></li>
+  
+    <li><a href="/tags/随/">随</a><small>4</small></li>
+  
+    <li><a href="/tags/随想/">随想</a><small>1</small></li>
+  
+    <li><a href="/tags/面试题/">面试题</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+
+  
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2013 smilearchery
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+var disqus_shortname = 'smilearchery';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

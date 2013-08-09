@@ -1,0 +1,352 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Linux | 雨落凡尘</title>
+  <meta name="author" content="smilearchery">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="雨落凡尘"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="雨落凡尘" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+  
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">雨落凡尘</a></h1>
+  <h2><a href="/">骚年们，我们的征途是星辰大海……</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+<h2 class="archive-title tag">Linux</h2>
+
+
+  
+    <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-09-25T16:00:00.000Z"><a href="/2012/09/26/ubuntu下wine玩worms-world-party/">2012 09 26</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/09/26/ubuntu下wine玩worms-world-party/">Ubuntu下wine玩Worms World Party</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>一直很喜欢玩百战天虫之世界大战，但是自从换了Ubuntu之后就木有玩过，后来尝试过wine但是失败了，在网上找了很久终于找到了解决的办法.<br>So,Follow me.  </p>
+<h5>1. 安装wine：</h5>
+<figure class="highlight lang-sh"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre>su<span class="operator"><span class="keyword">do</span> apt-<span class="keyword">get</span> install wine #注意只能装wine <span class="number">1.2</span>版本，最新的<span class="number">1.3</span>不支持，暂未找到解决办法
+</pre></td></tr></table></figure>
+
+<h5>2. 安装百战天虫之世界大战，如果安装时有乱码的话可以使用以下命令：</h5>
+<figure class="highlight lang-sh"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre>env LANG=zh_CN<span class="variable">.UTF</span>-<span class="number">8</span> wine wwp<span class="variable">.exe</span>
+</pre></td></tr></table></figure>
+
+<h5>(如果已经安装过百战天虫之世界大战可以不用重新安装，直接看下一步吧)</h5>
+<h5>3. 下载wine代码：</h5>
+<figure class="highlight lang-sh"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre>su<span class="operator"><span class="keyword">do</span> apt-<span class="keyword">get</span> source wine1<span class="number">.2</span>
+</pre></td></tr></table></figure>
+
+<h5>4. 用gedit或vim将以下脚本保存，文件名任意，如wwp_wine.patch</h5>
+<figure class="highlight lang-sh"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+</pre></td><td class="code"><pre><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span> <span class="comment">dlls/wined3d/swapchain_gdi</span>.<span class="comment">c</span>.<span class="comment">1</span>.<span class="comment">2</span>    <span class="comment">2010</span>-<span class="comment">07</span>-<span class="comment">16</span> <span class="comment">17:05:45</span>.<span class="comment">000000000</span> <span class="literal">+</span><span class="comment">0200</span>
+<span class="literal">+</span><span class="literal">+</span><span class="literal">+</span> <span class="comment">dlls/wined3d/swapchain_gdi</span>.<span class="comment">c</span>    <span class="comment">2010</span>-<span class="comment">10</span>-<span class="comment">27</span> <span class="comment">19:39:04</span>.<span class="comment">000000000</span> <span class="literal">+</span><span class="comment">0200</span>
+<span class="comment">@@</span> <span class="literal">-</span><span class="comment">101</span>,<span class="comment">7</span> <span class="literal">+</span><span class="comment">101</span>,<span class="comment">7</span> <span class="comment">@@</span> <span class="comment">void</span> <span class="comment">x11_copy_to_screen(IWineD3DSwapChai</span>
+
+         <span class="comment">hSurfaceDC</span> <span class="comment">=</span> <span class="comment">front</span>-&gt;<span class="comment">hDC;</span>
+
+<span class="literal">-</span>        <span class="comment">hDisplayWnd</span> <span class="comment">=</span> <span class="comment">This</span>-&gt;<span class="comment">win_handle;</span>
+<span class="literal">+</span>        <span class="comment">hDisplayWnd</span> <span class="comment">=</span> <span class="comment">GetDesktopWindow();</span>
+         <span class="comment">hDisplayDC</span> <span class="comment">=</span> <span class="comment">GetDCEx(hDisplayWnd</span>, <span class="comment">0</span>, <span class="comment">DCX_CLIPSIBLINGS|DCX_CACHE);</span>
+         <span class="comment">if(rc)</span> <span class="comment">{</span>
+             <span class="comment">TRACE("</span> <span class="comment">copying</span> <span class="comment">rect</span> <span class="comment">(%d</span>,<span class="comment">%d)</span>-&gt;<span class="comment">(%d</span>,<span class="comment">%d)</span>, <span class="comment">offset</span> <span class="comment">(%d</span>,<span class="comment">%d)\n"</span>,
+<span class="literal">-</span><span class="literal">-</span><span class="literal">-</span> <span class="comment">dlls/ddraw/main</span>.<span class="comment">c</span>.<span class="comment">1</span>.<span class="comment">2</span>   <span class="comment">2010</span>-<span class="comment">07</span>-<span class="comment">16</span> <span class="comment">17:05:45</span>.<span class="comment">000000000</span> <span class="literal">+</span><span class="comment">0200</span>
+<span class="literal">+</span><span class="literal">+</span><span class="literal">+</span> <span class="comment">dlls/ddraw/main</span>.<span class="comment">c</span>   <span class="comment">2010</span>-<span class="comment">10</span>-<span class="comment">27</span> <span class="comment">19:46:22</span>.<span class="comment">000000000</span> <span class="literal">+</span><span class="comment">0200</span>
+<span class="comment">@@</span> <span class="literal">-</span><span class="comment">53</span>,<span class="comment">7</span> <span class="literal">+</span><span class="comment">53</span>,<span class="comment">7</span> <span class="comment">@@</span> <span class="comment">static</span> <span class="comment">typeof(WineDirect3DCreate)</span> <span class="comment">*pWine</span>
+ <span class="comment">WINE_DEFAULT_DEBUG_CHANNEL(ddraw);</span>
+
+ <span class="comment">/*</span> <span class="comment">The</span> <span class="comment">configured</span> <span class="comment">default</span> <span class="comment">surface</span> <span class="comment">*/</span>
+<span class="literal">-</span><span class="comment">WINED3DSURFTYPE</span> <span class="comment">DefaultSurfaceType</span> <span class="comment">=</span> <span class="comment">SURFACE_UNKNOWN;</span>
+<span class="literal">+</span><span class="comment">WINED3DSURFTYPE</span> <span class="comment">DefaultSurfaceType</span> <span class="comment">=</span> <span class="comment">SURFACE_GDI;</span>
+
+ <span class="comment">/*</span> <span class="comment">DDraw</span> <span class="comment">list</span> <span class="comment">and</span> <span class="comment">critical</span> <span class="comment">section</span> <span class="comment">*/</span>
+ <span class="comment">static</span> <span class="comment">struct</span> <span class="comment">list</span> <span class="comment">global_ddraw_list</span> <span class="comment">=</span> <span class="comment">LIST_INIT(global_ddraw_list);</span>
+<span class="comment">@@</span> <span class="literal">-</span><span class="comment">766</span>,<span class="comment">6</span> <span class="literal">+</span><span class="comment">766</span>,<span class="comment">13</span> <span class="comment">@@</span> <span class="comment">static</span> <span class="comment">inline</span> <span class="comment">DWORD</span> <span class="comment">get_config_key(HKEY</span> 
+     <span class="comment">return</span> <span class="comment">ERROR_FILE_NOT_FOUND;</span>
+ <span class="comment">}</span>
+
+<span class="literal">+</span><span class="comment">void</span> <span class="comment">print_gdi_surface_warning()</span>
+<span class="literal">+</span><span class="comment">{</span>
+<span class="literal">+</span>    <span class="comment">FIXME("This</span> <span class="comment">is</span> <span class="comment">a</span> <span class="comment">hacked</span> <span class="comment">ddraw</span> <span class="comment">defaulting</span> <span class="comment">to</span> <span class="comment">GDI</span> <span class="comment">even</span> <span class="comment">when</span> <span class="comment">opengl</span> <span class="comment">surfaces</span> <span class="comment">would</span> <span class="comment">be</span> <span class="comment">used!\n");</span>
+<span class="literal">+</span>    <span class="comment">FIXME("The</span> <span class="comment">normal</span> <span class="comment">way</span> <span class="comment">to</span> <span class="comment">default</span> <span class="comment">to</span> <span class="comment">GDI</span> <span class="comment">surfaces</span> <span class="comment">is</span> <span class="comment">to</span> <span class="comment">set</span> <span class="comment">\"HKEY_CURRENT_USER\\Software\\Wine\\Direct3D\"</span> <span class="comment">to</span> <span class="comment">\"gdi\"\n");</span>
+<span class="literal">+</span>    <span class="comment">FIXME("If</span> <span class="comment">that</span> <span class="comment">works</span> <span class="comment">for</span> <span class="comment">you</span> <span class="comment">then</span> <span class="comment">you</span> <span class="comment">shouldn't</span> <span class="comment">use</span> <span class="comment">this</span> <span class="comment">hack</span>.<span class="comment">\n");</span>
+<span class="literal">+</span><span class="comment">}</span>
+<span class="literal">+</span>
+ <span class="comment">/***********************************************************************</span>
+  <span class="comment">*</span> <span class="comment">DllMain</span> <span class="comment">(DDRAW</span>.<span class="comment">0)</span>
+  <span class="comment">*</span>
+<span class="comment">@@</span> <span class="literal">-</span><span class="comment">839</span>,<span class="comment">14</span> <span class="literal">+</span><span class="comment">846</span>,<span class="comment">16</span> <span class="comment">@@</span> <span class="comment">DllMain(HINSTANCE</span> <span class="comment">hInstDLL</span>,
+                 <span class="comment">}</span>
+                 <span class="comment">else</span> <span class="comment">if</span> <span class="comment">(!strcmp(buffer</span>,<span class="comment">"opengl"))</span>
+                 <span class="comment">{</span>
+<span class="literal">-</span>                    <span class="comment">TRACE("Defaulting</span> <span class="comment">to</span> <span class="comment">opengl</span> <span class="comment">surfaces\n");</span>
+<span class="literal">-</span>                    <span class="comment">DefaultSurfaceType</span> <span class="comment">=</span> <span class="comment">SURFACE_OPENGL;</span>
+<span class="literal">+</span>                    <span class="comment">TRACE("Not</span> <span class="comment">defaulting</span> <span class="comment">to</span> <span class="comment">opengl</span> <span class="comment">surfaces</span>, <span class="comment">in</span> <span class="comment">spite</span> <span class="comment">of</span> <span class="comment">the</span> <span class="comment">registry</span> <span class="comment">setting\n");</span>
+<span class="literal">+</span>                    <span class="comment">print_gdi_surface_warning();</span>
+                 <span class="comment">}</span>
+                 <span class="comment">else</span>
+                 <span class="comment">{</span>
+                     <span class="comment">ERR("Unknown</span> <span class="comment">default</span> <span class="comment">surface</span> <span class="comment">type</span>. <span class="comment">Supported</span> <span class="comment">are:\n</span> <span class="comment">gdi</span>, <span class="comment">opengl\n");</span>
+<span class="literal">+</span>                    <span class="comment">print_gdi_surface_warning();</span>
+                 <span class="comment">}</span>
+             <span class="comment">}</span>
+<span class="literal">+</span>            <span class="comment">print_gdi_surface_warning();</span>
+         <span class="comment">}</span>
+
+         <span class="comment">/*</span> <span class="comment">On</span> <span class="comment">Windows</span> <span class="comment">one</span> <span class="comment">can</span> <span class="comment">force</span> <span class="comment">the</span> <span class="comment">refresh</span> <span class="comment">rate</span> <span class="comment">that</span> <span class="comment">DirectDraw</span> <span class="comment">uses</span> <span class="comment">by</span>
+<span class="literal">-</span><span class="literal">-</span><span class="literal">-</span> <span class="comment">dlls/ddraw/ddraw</span>.<span class="comment">c</span>.<span class="comment">1</span>.<span class="comment">2</span>  <span class="comment">2010</span>-<span class="comment">07</span>-<span class="comment">16</span> <span class="comment">17:05:45</span>.<span class="comment">000000000</span> <span class="literal">+</span><span class="comment">0200</span>
+<span class="literal">+</span><span class="literal">+</span><span class="literal">+</span> <span class="comment">dlls/ddraw/ddraw</span>.<span class="comment">c</span>  <span class="comment">2010</span>-<span class="comment">10</span>-<span class="comment">27</span> <span class="comment">19:48:54</span>.<span class="comment">000000000</span> <span class="literal">+</span><span class="comment">0200</span>
+<span class="comment">@@</span> <span class="literal">-</span><span class="comment">479</span>,<span class="comment">7</span> <span class="literal">+</span><span class="comment">479</span>,<span class="comment">8</span> <span class="comment">@@</span> <span class="comment">IDirectDrawImpl_SetCooperativeLevel(IDir</span>
+             <span class="comment">!(This</span>-&gt;<span class="comment">devicewindow)</span> <span class="comment">&&</span>
+             <span class="comment">(hwnd</span> <span class="comment">!=</span> <span class="comment">window)</span> <span class="comment">)</span>
+         <span class="comment">{</span>
+<span class="literal">-</span>            <span class="comment">HRESULT</span> <span class="comment">hr</span> <span class="comment">=</span> <span class="comment">IWineD3DDevice_AcquireFocusWindow(This</span>-&gt;<span class="comment">wineD3DDevice</span>, <span class="comment">hwnd);</span>
+<span class="literal">+</span>            <span class="comment">HRESULT</span> <span class="comment">hr</span> <span class="comment">=</span> <span class="comment">IWineD3DDevice_AcquireFocusWindow(This</span>-&gt;<span class="comment">wineD3DDevice</span>, <span class="comment">GetDesktopWindow());</span>
+<span class="literal">+</span>            <span class="comment">FIXME("This</span> <span class="comment">is</span> <span class="comment">a</span> <span class="comment">hacked</span> <span class="comment">ddraw</span> <span class="comment">drawing</span> <span class="comment">to</span> <span class="comment">the</span> <span class="comment">desktop</span> <span class="comment">window</span> <span class="comment">instead</span> <span class="comment">of</span> <span class="comment">the</span> <span class="comment">window</span> <span class="comment">the</span> <span class="comment">app</span> <span class="comment">requested!\n");</span>
+             <span class="comment">if</span> <span class="comment">(FAILED(hr))</span>
+             <span class="comment">{</span>
+                 <span class="comment">ERR("Failed</span> <span class="comment">to</span> <span class="comment">acquire</span> <span class="comment">focus</span> <span class="comment">window</span>, <span class="comment">hr</span> <span class="comment">%#x</span>.<span class="comment">\n"</span>, <span class="comment">hr);
+</pre></td></tr></table></figure>
+
+<h5>5. 将wwp_wine.patch文件copy如刚才下载的wine1.2的文件夹</h5>
+<h5>6. 进入源代码文件夹并执行以下命令：</h5>
+<figure class="highlight lang-sh"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+</pre></td><td class="code"><pre>patch -p0 &lt; wwp_wine<span class="variable">.patch</span>
+./configure 
+make dlls/ddraw dlls/wined3d 
+strip dlls/ddraw/ddraw<span class="variable">.dll</span><span class="variable">.so</span> 
+strip dlls/wined3d/wined3d<span class="variable">.dll</span><span class="variable">.so</span>
+</pre></td></tr></table></figure>
+
+<h5>7. 将当前文件夹下的dlls/ddraw/ddraw.dll.so拷贝到百战天虫之世界大战的安装目录，并重命名为ddraw.dll</h5>
+<h5>将当前文件夹下的dlls/wined3d/wined3d.dll.so拷贝到百战天虫之世界大战的安装目录，并重命名为wined3d.dll</h5>
+<h5>8. OK,Enjoy the Game！！！O(∩_∩)O~</h5>
+<h4>P.S.</h4>
+<pre><code><figure class="highlight"><pre><span class="bullet">1. </span>如果遇到声音问题的话(一般都会遇到-_-!)，尝试用winetricks安装 devenum.dll和quartz.dll
+<span class="bullet">2. </span>千万不要全屏玩，全屏无法选择武器，玩前请用winecfg将分辨率调到800*600或者你认为合适的
+<span class="bullet">3. </span>每玩完一局都要退出一次….呃….你玩了就知道了=。=
+<span class="bullet">4. </span>不能玩的话再试试用winetricks安装msvcp60.dll
+<span class="bullet">5. </span>再不能玩我也不知道了~~(╯﹏╰)b  
+</pre></figure></code></pre>
+<p>解决方法来自<a href="http://appdb.winehq.org/objectManager.php?bShowAll=true&amp;bIsQueue=false&amp;bIsRejected=false&amp;sClass=version&amp;sTitle=&amp;sReturnTo=&amp;iId=3905">winehq</a><br>我加了一点经验和自己的想法</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+  
+
+  <nav id="pagination">
+  
+  
+  <div class="clearfix"></div>
+</nav>
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:yoursite.com">
+  </form>
+</div>
+
+  
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/Android/">Android</a><small>5</small></li>
+  
+    <li><a href="/tags/C/">C</a><small>1</small></li>
+  
+    <li><a href="/tags/ExpandableListView/">ExpandableListView</a><small>1</small></li>
+  
+    <li><a href="/tags/Java/">Java</a><small>1</small></li>
+  
+    <li><a href="/tags/Linux/">Linux</a><small>1</small></li>
+  
+    <li><a href="/tags/ListView/">ListView</a><small>2</small></li>
+  
+    <li><a href="/tags/QQ/">QQ</a><small>1</small></li>
+  
+    <li><a href="/tags/ViewPager/">ViewPager</a><small>1</small></li>
+  
+    <li><a href="/tags/Wine/">Wine</a><small>1</small></li>
+  
+    <li><a href="/tags/好玩的/">好玩的</a><small>1</small></li>
+  
+    <li><a href="/tags/实习/">实习</a><small>1</small></li>
+  
+    <li><a href="/tags/随/">随</a><small>4</small></li>
+  
+    <li><a href="/tags/随想/">随想</a><small>1</small></li>
+  
+    <li><a href="/tags/面试题/">面试题</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+
+  
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2013 smilearchery
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+var disqus_shortname = 'smilearchery';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

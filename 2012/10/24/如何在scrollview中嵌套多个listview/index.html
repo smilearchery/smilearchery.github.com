@@ -1,0 +1,237 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>如何在ScrollView中嵌套多个ListView | 雨落凡尘</title>
+  <meta name="author" content="smilearchery">
+  
+  <meta name="description" content="一般多个控件在一个Layout中，并且我们想让页面可以向下滑动时，我们会使用ScrollView，将控件放在ScrollView中，但是有时候，我们会碰到一些需求如让两个或多个ListView在同一个页面显示。这时就会出现问题，由于ListView 也有自带的滚动事件，会与ScrollView产生冲">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="如何在ScrollView中嵌套多个ListView"/>
+  <meta property="og:site_name" content="雨落凡尘"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="雨落凡尘" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+  
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">雨落凡尘</a></h1>
+  <h2><a href="/">骚年们，我们的征途是星辰大海……</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-10-23T16:00:00.000Z"><a href="/2012/10/24/如何在scrollview中嵌套多个listview/">2012 10 24</a></time>
+      
+      
+  
+    <h1 class="title">如何在ScrollView中嵌套多个ListView</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>一般多个控件在一个Layout中，并且我们想让页面可以向下滑动时，我们会使用ScrollView，将控件放在ScrollView中，但是有时候，我们会碰到一些需求如让两个或多个ListView在同一个页面显示。这时就会出现问题，由于ListView 也有自带的滚动事件，会与ScrollView产生冲突，会造成ListView 只能显示一行或者两行，数据在这点控件内可以滚动，甚是蛋疼…  </p>
+<p>而解决方法是比较简单的，我们使用一个方法：在ListView加载完数据后，计算每一个item的高度，同时加上divider的高度，算出Measure后ListView的总高度，将ListView的高度设置为这个高度就可以了，下面看代码：</p>
+<figure class="highlight lang-java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+</pre></td><td class="code"><pre><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> setListViewHeightBasedOnChildren(ListView listView) {
+        ListAdapter listAdapter = listView.getAdapter();
+        <span class="keyword">if</span> (listAdapter == <span class="keyword">null</span>) {
+            <span class="comment">// pre-condition</span>
+            <span class="keyword">return</span>;
+        }
+
+        <span class="keyword">int</span> totalHeight = <span class="number">0</span>;
+        <span class="keyword">int</span> desiredWidth = MeasureSpec.makeMeasureSpec(listView.getWidth(), MeasureSpec.AT_MOST);
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; listAdapter.getCount(); i++) {
+            View listItem = listAdapter.getView(i, <span class="keyword">null</span>, listView);
+            listItem.measure(<span class="number">0</span>, <span class="number">0</span>);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * listAdapter.getCount());
+        listView.setLayoutParams(params);
+        <span class="comment">// listView.requestLayout();</span>
+    }
+</pre></td></tr></table></figure>
+
+<p>但是这样对性能会有比较严重的影响，如代码可见，在使用这个方法时，要对每一个item进行计算，最后再将ListView设置为定高，经测试，在item较多时，会有比较严重的延迟。因此此方法适合item不多，或者对item较少增删改的情况。在数据较多时，还是考虑使用ExpandableListView或者其他的实现方式。</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+  
+  <div class="tags">
+    <a href="/tags/Android/">Android</a>, <a href="/tags/ListView/">ListView</a>
+  </div>
+
+        
+  <div class="addthis addthis_toolbox addthis_default_style">
+    
+      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+    
+    
+      <a class="addthis_button_tweet"></a>
+    
+    
+      <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    
+    
+      <a class="addthis_button_pinterest_pinit" pi:pinit:layout="horizontal"></a>
+    
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js"></script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:yoursite.com">
+  </form>
+</div>
+
+  
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/Android/">Android</a><small>5</small></li>
+  
+    <li><a href="/tags/C/">C</a><small>1</small></li>
+  
+    <li><a href="/tags/ExpandableListView/">ExpandableListView</a><small>1</small></li>
+  
+    <li><a href="/tags/Java/">Java</a><small>1</small></li>
+  
+    <li><a href="/tags/Linux/">Linux</a><small>1</small></li>
+  
+    <li><a href="/tags/ListView/">ListView</a><small>2</small></li>
+  
+    <li><a href="/tags/QQ/">QQ</a><small>1</small></li>
+  
+    <li><a href="/tags/ViewPager/">ViewPager</a><small>1</small></li>
+  
+    <li><a href="/tags/Wine/">Wine</a><small>1</small></li>
+  
+    <li><a href="/tags/好玩的/">好玩的</a><small>1</small></li>
+  
+    <li><a href="/tags/实习/">实习</a><small>1</small></li>
+  
+    <li><a href="/tags/随/">随</a><small>4</small></li>
+  
+    <li><a href="/tags/随想/">随想</a><small>1</small></li>
+  
+    <li><a href="/tags/面试题/">面试题</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+
+  
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2013 smilearchery
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+var disqus_shortname = 'smilearchery';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

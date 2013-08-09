@@ -1,0 +1,253 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>面试题 | 雨落凡尘</title>
+  <meta name="author" content="smilearchery">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="雨落凡尘"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="雨落凡尘" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+  
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">雨落凡尘</a></h1>
+  <h2><a href="/">骚年们，我们的征途是星辰大海……</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+<h2 class="archive-title tag">面试题</h2>
+
+
+  
+    <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-10-23T16:00:00.000Z"><a href="/2012/10/24/链表逆置/">2012 10 24</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/10/24/链表逆置/">链表逆置</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>当年面腾讯实习和百度笔试都出现了此题，非常简单且经典的题目，留下做个记录吧～～～</p>
+<figure class="highlight lang-c"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+</pre></td><td class="code"><pre>Node* LinkList_reverse(Node* head)
+{
+    Node *preNode,*curNode,*nextNode;
+
+    <span class="keyword">if</span>(head==<span class="keyword">NULL</span>) <span class="keyword">return</span> <span class="keyword">NULL</span>;<span class="comment">//空链表</span>
+
+    <span class="keyword">if</span>(head-&gt;next == <span class="keyword">NULL</span>) <span class="keyword">return</span> head;<span class="comment">//仅一个元素</span>
+
+    curNode = head;preNode=<span class="keyword">NULL</span>;<span class="comment">//初始化</span>
+
+    <span class="keyword">while</span>(curNode)
+    {
+        nextNode = curNode-&gt;next;<span class="comment">//先记录下一个结点</span>
+        curNode-&gt;next = preNode;<span class="comment">//改变链表方向（逆置）</span>
+        preNode = curNode;<span class="comment">//将当前结点作为下一次循环的前一个结点</span>
+        curNode = nextNode;<span class="comment">//向后推移一个结点</span>
+    }
+    <span class="keyword">return</span> preNode;<span class="comment">//当遍历完链表后curNode应该为空，此时preNode就是逆置后链表头(head)</span>
+}
+</pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+  
+    <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-10-14T16:00:00.000Z"><a href="/2012/10/15/搜狗笔试的一道加密解密题/">2012 10 15</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/10/15/搜狗笔试的一道加密解密题/">搜狗笔试的一道加密解密题</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>N个整数（数的大小为0-255）的序列，把它们加密为K个整数（数的大小为0-255）.再将K个整数顺序随机打乱，使得可以从这乱序的K个整数中解码出原序列。设计加密解密算法,且要求K&lt;=15<em>N.<br>如果是:<br>    1. N&lt;=16,要求K&lt;=16</em>N.
+    2. N&lt;=16,要求K&lt;=10<em>N.
+    3. N&lt;=64,要求K&lt;=15</em>N.</p>
+<p>首先考虑N个整数，为0-255，及每一个整数可换算成为一个8位的二进制数，因此N个整数共需8N位二进制来存储。  </p>
+<p>考虑情况1：N个整数需要8N位，将其存入16N个数中，因此每个数只需存储8N/16N=0.5&lt;1位数  </p>
+<p>同理可证，情况2需0.8&lt;1位，情况3需8/15 &lt;1位。  </p>
+<p>考虑以上N最大的情况下，N=64，64需要6位二进制数来存储。而K中的每一个整数也可以用8位二进制数来表示，因此，将前六位用于存储顺序信息(0-64)，后两位用于存储N个整数中的两位。  </p>
+<p>解析时，只需根据前六位的顺序得到有序的8N位二进制数，然后每8位一组即可得到原N个整数的序列。</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+  
+
+  <nav id="pagination">
+  
+  
+  <div class="clearfix"></div>
+</nav>
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:yoursite.com">
+  </form>
+</div>
+
+  
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/Android/">Android</a><small>5</small></li>
+  
+    <li><a href="/tags/C/">C</a><small>1</small></li>
+  
+    <li><a href="/tags/ExpandableListView/">ExpandableListView</a><small>1</small></li>
+  
+    <li><a href="/tags/Java/">Java</a><small>1</small></li>
+  
+    <li><a href="/tags/Linux/">Linux</a><small>1</small></li>
+  
+    <li><a href="/tags/ListView/">ListView</a><small>2</small></li>
+  
+    <li><a href="/tags/QQ/">QQ</a><small>1</small></li>
+  
+    <li><a href="/tags/ViewPager/">ViewPager</a><small>1</small></li>
+  
+    <li><a href="/tags/Wine/">Wine</a><small>1</small></li>
+  
+    <li><a href="/tags/好玩的/">好玩的</a><small>1</small></li>
+  
+    <li><a href="/tags/实习/">实习</a><small>1</small></li>
+  
+    <li><a href="/tags/随/">随</a><small>4</small></li>
+  
+    <li><a href="/tags/随想/">随想</a><small>1</small></li>
+  
+    <li><a href="/tags/面试题/">面试题</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+
+  
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2013 smilearchery
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+var disqus_shortname = 'smilearchery';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,281 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Archives: 2012/11 | 雨落凡尘</title>
+  <meta name="author" content="smilearchery">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="雨落凡尘"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="雨落凡尘" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+  
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">雨落凡尘</a></h1>
+  <h2><a href="/">骚年们，我们的征途是星辰大海……</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+<h2 class="archive-title">2012/11</h2>
+
+
+  
+    <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-11-08T16:00:00.000Z"><a href="/2012/11/09/listview中的item不能点击的解决方法/">2012 11 09</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/11/09/listview中的item不能点击的解决方法/">ListView中的Item不能点击的解决方法</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>有时，为了实现某种功能，在Android程序中会考虑在ListView的每一个Item中添加一个Button(或ImageButton等)。<br>但是，这样会出现一个问题：<br>当同时设置了Button的onClick及ListView的onItemClickListener时，ListView的onItemClickListener会失去作用，即ListView不响应Item的点击事件。<br>出现这个问题的原因是：<br>ListView的Item能被选中的原因是它能获取Focus，而自定义的Item中有Button或者ImageButton等自控件时，子控件会获取默认Focus，这样Item就获取不到Focus，自然也无法相应点击事件了。<br>解决方法很简单：  </p>
+<p>在Item的布局的根Layout上加上：</p>
+<figure class="highlight lang-xml"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre>android:descendantFocusability="blocksDescendants"
+</pre></td></tr></table></figure>
+
+<p>即可，可参照如下代码：</p>
+<figure class="highlight lang-xml"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+</pre></td><td class="code"><pre><span class="tag">&lt;<span class="title">LinearLayout</span> <span class="attribute">xmlns:android</span>=<span class="value">"http://schemas.android.com/apk/res/android"</span>
+    <span class="attribute">android:layout_width</span>=<span class="value">"match_parent"</span>
+    <span class="attribute">android:layout_height</span>=<span class="value">"wrap_content"</span>
+    <span class="attribute">android:background</span>=<span class="value">"#e7e7e7"</span>
+    <span class="attribute">android:descendantFocusability</span>=<span class="value">"blocksDescendants"</span>
+    <span class="attribute">android:gravity</span>=<span class="value">"center_vertical"</span>
+    <span class="attribute">android:orientation</span>=<span class="value">"vertical"</span> &gt;</span>
+
+        <span class="tag">&lt;<span class="title">ImageView
+</span>            <span class="attribute">android:id</span>=<span class="value">"@+id/app_icon"</span>
+            <span class="attribute">android:layout_width</span>=<span class="value">"@dimen/app_icon_size"</span>
+            <span class="attribute">android:layout_height</span>=<span class="value">"@dimen/app_icon_size"</span>
+            <span class="attribute">android:layout_gravity</span>=<span class="value">"center"</span>
+            <span class="attribute">android:layout_marginRight</span>=<span class="value">"10dp"</span>
+            <span class="attribute">android:scaleType</span>=<span class="value">"fitCenter"</span> /&gt;</span>
+
+        <span class="tag">&lt;<span class="title">com.dx.widget.DXCustomButton
+</span>            <span class="attribute">android:id</span>=<span class="value">"@+id/uninstall_btn"</span>
+            <span class="attribute">android:layout_width</span>=<span class="value">"wrap_content"</span>
+            <span class="attribute">android:layout_height</span>=<span class="value">"32dip"</span>
+            <span class="attribute">android:layout_gravity</span>=<span class="value">"center_vertical"</span>
+            <span class="attribute">android:background</span>=<span class="value">"@drawable/btn2"</span>
+            <span class="attribute">android:text</span>=<span class="value">"@string/uninstall_app"</span>
+            <span class="attribute">android:textSize</span>=<span class="value">"12sp"</span> /&gt;</span>
+
+<span class="tag">&lt;/<span class="title">LinearLayout</span>&gt;</span>
+</pre></td></tr></table></figure>
+
+<p>但是当这时，会出现另外一个问题，当点击每一个Item时(不是点击Button)，Item中的Button也会呈现按下的状态。解决这个问题的方法也很简单，重写你所需的Button中的setPressed方法即可：</p>
+<figure class="highlight lang-java"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+</pre></td><td class="code"><pre><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DXCustomButton</span> <span class="keyword">extends</span> <span class="title">Button</span> {</span>
+    <span class="keyword">public</span> DXCustomButton(Context context) {
+        <span class="keyword">super</span>(context);
+    }
+
+    <span class="keyword">public</span> DXCustomButton(Context context, AttributeSet attrs) {
+        <span class="keyword">super</span>(context, attrs);
+    }
+
+    <span class="keyword">public</span> DXCustomButton(Context context, AttributeSet attrs, <span class="keyword">int</span> defStyle) {
+        <span class="keyword">super</span>(context, attrs, defStyle);
+    }
+
+    <span class="annotation">@Override</span>
+    <span class="keyword">public</span> <span class="keyword">void</span> setPressed(<span class="keyword">boolean</span> pressed) {
+        <span class="keyword">if</span> (pressed && ((View) getParent()).isPressed()) {
+            <span class="keyword">return</span>;
+        }
+        <span class="keyword">super</span>.setPressed(pressed);
+    }
+
+}
+</pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+  
+
+  <nav id="pagination">
+  
+  
+  <div class="clearfix"></div>
+</nav>
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:yoursite.com">
+  </form>
+</div>
+
+  
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/Android/">Android</a><small>5</small></li>
+  
+    <li><a href="/tags/C/">C</a><small>1</small></li>
+  
+    <li><a href="/tags/ExpandableListView/">ExpandableListView</a><small>1</small></li>
+  
+    <li><a href="/tags/Java/">Java</a><small>1</small></li>
+  
+    <li><a href="/tags/Linux/">Linux</a><small>1</small></li>
+  
+    <li><a href="/tags/ListView/">ListView</a><small>2</small></li>
+  
+    <li><a href="/tags/QQ/">QQ</a><small>1</small></li>
+  
+    <li><a href="/tags/ViewPager/">ViewPager</a><small>1</small></li>
+  
+    <li><a href="/tags/Wine/">Wine</a><small>1</small></li>
+  
+    <li><a href="/tags/好玩的/">好玩的</a><small>1</small></li>
+  
+    <li><a href="/tags/实习/">实习</a><small>1</small></li>
+  
+    <li><a href="/tags/随/">随</a><small>4</small></li>
+  
+    <li><a href="/tags/随想/">随想</a><small>1</small></li>
+  
+    <li><a href="/tags/面试题/">面试题</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+
+  
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2013 smilearchery
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+var disqus_shortname = 'smilearchery';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>
